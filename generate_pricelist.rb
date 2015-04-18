@@ -1,7 +1,41 @@
-#!/bin/env ruby
+#!/usr/bin/env ruby
 
 require 'csv'
 require 'awesome_print'
+
+def style
+  <<-EOM
+  <style type="text/css">
+    * { font-family: Helvetica, sans-serif; font-size: 11px; }
+    h2 { font-size: 2rem; padding: 10px 30px 0; }
+    .byline { font-size: 1.4rem; padding: 0 30px 10px; }
+    .byline { font-style: italic; }
+    .entry { position: relative; float: left; width: 155px; border-top: 1px solid #ddd; padding: 30px; min-height: 120px;}
+    .entry-item { text-align: right; text-transform: capitalize; line-height: 1.4em; }
+    .entry-number { float: left; font-weight: bold; font-size: 1.1em; line-height: 1.4em;}
+    .name { font-weight: bold; font-size: 1.1em; }
+    .medium { font-style: italic; }
+    .contact { float: right; padding-top: 10px;padding-right: 50px; text-align: right; }    
+  </style>
+  EOM
+end
+
+def header
+  <<-EOM
+    <div class='contact'>
+      e: mrrogers@bunnymatic.com
+      <br/>
+      fweet: @bunnymaticsf
+      <br/>
+      instagram: @bunnymaticsf
+      <br/>
+      fb: bunnymatic
+      <br/>
+    </div>
+    <h2>Bunnymatic and Friends</h2>
+    <div class='byline'>by Mr Rogers</div>
+  EOM
+end
 
 def div v, attrs = {}
   attr_string = attrs.map do |k,v|
@@ -24,6 +58,12 @@ end
 
 dolores_park_entries = entries.select{|e| e[:for_dolores_park] == 'TRUE'}.map{|e| e.delete(:for_dolores_park); e }
 
+
+puts "<html>"
+puts style
+puts "<body>"
+puts header
+
 dolores_park_entries.each_with_index do |entry, idx|
   entry_body = [:name, :medium, :size, :date, :price].map do |key|
     v = entry[key]
@@ -31,6 +71,7 @@ dolores_park_entries.each_with_index do |entry, idx|
   end
   puts div( ([span(idx+1, class: 'entry-number')] + entry_body).join("\n"), class: 'entry' )
 end
-
+puts "</body>"
+puts "</html>"
 
 
