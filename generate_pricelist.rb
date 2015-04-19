@@ -16,6 +16,11 @@ def style
     .name { font-weight: bold; font-size: 1.1em; }
     .medium { font-style: italic; }
     .contact { float: right; padding-top: 10px;padding-right: 50px; text-align: right; }    
+    @media print {
+    .page-break {
+       page-break-after: always;
+    }
+    }
   </style>
   EOM
 end
@@ -56,7 +61,10 @@ CSV.foreach(filename, headers: true, header_converters: :symbol) do |row|
   entries << Hash[ row.to_a ]
 end
 
-dolores_park_entries = entries.select{|e| e[:for_dolores_park] == 'TRUE'}.map{|e| e.delete(:for_dolores_park); e }
+#dolores_park_entries = entries.select{|e| e[:for_dolores_park] == 'TRUE'}.map{|e| e.delete(:for_dolores_park); e }
+#entries = dolores_park_entries
+
+entries = entries.select{|e| !e[:spring_os_2015].nil? && (/^\s+$/ !~ e[:spring_os_2015])} #.map{|e| e.delete(:spring_os_2015); e }
 
 
 puts "<html>"
@@ -64,12 +72,15 @@ puts style
 puts "<body>"
 puts header
 
-dolores_park_entries.each_with_index do |entry, idx|
+entries.each_with_index do |entry, idx|
   entry_body = [:name, :medium, :size, :date, :price].map do |key|
     v = entry[key]
     div(v, class: "entry-item #{key}")
   end
   puts div( ([span(idx+1, class: 'entry-number')] + entry_body).join("\n"), class: 'entry' )
+  if ((idx + 1) % 12 == 0)
+    puts div '&nbsp;', class: 'page-break'
+  end
 end
 puts "</body>"
 puts "</html>"
