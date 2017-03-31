@@ -30,7 +30,7 @@ def header
     <div class='contact'>
       e: mrrogers@bunnymatic.com
       <br/>
-      fweet: @bunnymaticsf
+      tweet: @bunnymaticsf
       <br/>
       instagram: @bunnymaticsf
       <br/>
@@ -64,7 +64,8 @@ end
 #dolores_park_entries = entries.select{|e| e[:for_dolores_park] == 'TRUE'}.map{|e| e.delete(:for_dolores_park); e }
 #entries = dolores_park_entries
 
-entries = entries.select{|e| !e[:spring_os_2015].nil? && (/^\s+$/ !~ e[:spring_os_2015])} #.map{|e| e.delete(:spring_os_2015); e }
+decider_column = :fall_2016
+entries = entries.select{|e| !e[decider_column].nil? && (/^\s+$/ !~ e[decider_column])} #.map{|e| e.delete(decider_column); e }
 
 
 puts "<html>"
