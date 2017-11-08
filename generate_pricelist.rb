@@ -11,7 +11,7 @@ def style
     h2 { font-size: 2rem; padding: 10px 30px 0; }
     .byline { font-size: 1.4rem; padding: 0 30px 10px; }
     .byline { font-style: italic; }
-    .entry { position: relative; float: left; width: 180px; border-top: 1px solid #ddd; padding: 30px; min-height: 120px;}
+    .entry { width: 180px; border-top: 1px solid #ddd; padding: 30px; min-height: 120px;}
     .entry-item { text-align: right; text-transform: capitalize; line-height: 1.4em; }
     .entry-number { float: left; font-weight: bold; font-size: 1.1em; line-height: 1.4em;}
     .name { font-weight: bold; font-size: 1.1em; }
@@ -21,6 +21,10 @@ def style
     .page-break {
        page-break-after: always;
     }
+    }
+    .entries {
+      display: flex;
+      flex-wrap: wrap;
     }
   </style>
   EOM
@@ -74,6 +78,7 @@ puts style
 puts "<body>"
 puts header
 
+puts "<div class='entries'>"
 entries.each_with_index do |entry, idx|
   entry_body = [:name, :medium, :size, :date, :price].map do |key|
     v = entry[key]
@@ -84,5 +89,7 @@ entries.each_with_index do |entry, idx|
     puts div '&nbsp;', class: 'page-break'
   end
 end
+puts "</div>"
+
 puts "</body>"
 puts "</html>"
